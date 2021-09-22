@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:notedget/components/note_inherited_widget.dart';
-import 'package:notedget/l10n/l10n.dart';
-
 import 'package:notedget/provider/theme_provider.dart';
 import 'package:notedget/screens/home.dart';
 import 'package:provider/provider.dart';
@@ -21,7 +19,6 @@ class MyApp extends StatelessWidget {
           return NoteInheritedWidget(
             child: MaterialApp(
               title: 'MakhaneRush',
-              supportedLocales: L10n.all,
               debugShowCheckedModeBanner: false,
               themeMode: themeProvider.themeMode,
               theme: MyTheme.lightTheme,

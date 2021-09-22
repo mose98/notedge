@@ -45,7 +45,7 @@ class _NoteListState extends State<NoteList> {
                           PageTransition(
                               type: PageTransitionType.rightToLeft,
                               child: NoteScreen(
-                                note: notes[index]!,
+                                note: notes[index],
                                 noteMode: NoteMode.Modify,
                               )));
                     },
@@ -61,7 +61,7 @@ class _NoteListState extends State<NoteList> {
                                 PageTransition(
                                     type: PageTransitionType.rightToLeft,
                                     child: NoteScreen(
-                                      note: notes[index]!,
+                                      note: notes[index],
                                       noteMode: NoteMode.Modify,
                                     )));
                           },
