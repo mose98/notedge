@@ -141,10 +141,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           PageTransition(
                               type: PageTransitionType.rightToLeft,
                               child: NoteScreen(
-                                title: "",
-                                content: "",
                                 noteMode: NoteMode.New,
-                                index: -1,
+                                note: null
                               )));
                     },
                     child: Padding(

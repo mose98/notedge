@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:notedget/components/note_inherited_widget.dart';
 import 'package:notedget/constants.dart';
+import 'package:notedget/provider/note_provider.dart';
 import 'package:notedget/screens/home.dart';
 import 'package:page_transition/page_transition.dart';
 
 class NoteScreen extends StatefulWidget {
-  String title;
-  String content;
   NoteMode noteMode;
-  int index;
+  late var note;
 
-  NoteScreen({required this.title, required this.content, required this.noteMode, required this.index});
+  NoteScreen({required this.note, required this.noteMode});
 
   @override
   State<NoteScreen> createState() => _NoteScreenState();
@@ -26,8 +25,8 @@ class _NoteScreenState extends State<NoteScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    titleController.text = widget.title!;
-    contentController.text = widget.content!;
+    titleController.text = widget.note['title']!;
+    contentController.text = widget.note['content']!;
   }
 
   @override
@@ -41,16 +40,17 @@ class _NoteScreenState extends State<NoteScreen> {
           final content = contentController.text;
 
           if(widget.noteMode == NoteMode.New){
-            _notes.add({
+            NoteProvider.insertNote({
               'title': title,
               'content': content
             });
           }
           else if(widget.noteMode == NoteMode.Modify){
-            _notes[widget.index] = {
-              'title': title,
-              'content': content
-            };
+            NoteProvider.updateNote({
+              'id': widget.note['id'],
+              'title': widget.note['title'],
+              'content': widget.note['content']
+            });
           }
           Navigator.of(context).pop();
         },
