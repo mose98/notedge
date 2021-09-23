@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:notedget/components/note_inherited_widget.dart';
 import 'package:notedget/constants.dart';
 import 'package:notedget/provider/note_provider.dart';
@@ -23,10 +24,12 @@ class _NoteScreenState extends State<NoteScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
+    if (widget.noteMode == NoteMode.Modify) {
+      titleController.text = widget.note['title'];
+      contentController.text = widget.note['content'];
+    }
+
     super.initState();
-    titleController.text = widget.note['title']!;
-    contentController.text = widget.note['content']!;
   }
 
   @override
@@ -35,22 +38,36 @@ class _NoteScreenState extends State<NoteScreen> {
     return Scaffold(
       floatingActionButton: FloatingActionButton(
         child: BackButtonIcon(),
-        onPressed: (){
+        onPressed: () {
           final title = titleController.text;
           final content = contentController.text;
 
-          if(widget.noteMode == NoteMode.New){
-            NoteProvider.insertNote({
-              'title': title,
-              'content': content
-            });
-          }
-          else if(widget.noteMode == NoteMode.Modify){
-            NoteProvider.updateNote({
-              'id': widget.note['id'],
-              'title': widget.note['title'],
-              'content': widget.note['content']
-            });
+          if (widget.noteMode == NoteMode.New) {
+            if (title != '' && content != '') {
+              NoteProvider.insertNote(
+                {
+                  'title': title,
+                  'content': content,
+                  'creationdate': widget.note['creationdate'],
+                  'editingdate': widget.note['editingdate'],
+                },
+              );
+            }
+          } else if (widget.noteMode == NoteMode.Modify) {
+            if (title == '' && content == '') {
+              NoteProvider.deleteNote(widget.note['id']);
+            } else {
+              final now = new DateTime.now();
+              String dataText = DateFormat.yMMMd('it_IT').add_jm().format(now);
+
+              NoteProvider.updateNote({
+                'id': widget.note['id'],
+                'title': title,
+                'content': content,
+                'creationdate': widget.note['creationdate'],
+                'editingdate': dataText,
+              });
+            }
           }
           Navigator.of(context).pop();
         },
@@ -63,7 +80,7 @@ class _NoteScreenState extends State<NoteScreen> {
         alignment: Alignment.center,
         child: SafeArea(
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(20.0),
             child: Column(
               children: [
                 SizedBox(

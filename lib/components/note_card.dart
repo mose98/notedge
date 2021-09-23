@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:notedget/constants.dart';
 
 class NoteCard extends StatelessWidget {
-  String? title;
+  String? text;
   String? content;
+  String? editDate;
 
-  NoteCard({this.title, this.content});
+  NoteCard({this.text, this.content, this.editDate});
 
   @override
   Widget build(BuildContext context) {
@@ -25,18 +26,18 @@ class NoteCard extends StatelessWidget {
             ListTile(
               leading: null,
               title: Text(
-                title!,
+                text ?? '',
                 style: kCardTitleStyle,
               ),
               subtitle: Text(
-                content!,
+                editDate ?? '',
                 style: kCardSubtitleStyle,
               ),
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),
               child: Text(
-                content!,
+                content ?? '',
                 maxLines: 3,
                 overflow: TextOverflow.ellipsis,
                 style: kBodyLabelStyle,

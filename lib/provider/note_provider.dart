@@ -13,7 +13,9 @@ class NoteProvider {
           create table Notes(
             id integer primary key autoincrement,
             title text not null,
-            content text not null
+            content text not null,
+            creationdate text not null,
+            editingdate text not null
           );
         ''');
       }

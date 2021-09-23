@@ -97,17 +97,19 @@ class _NoteListState extends State<NoteList> {
                             "Elimina",
                             style: kCardSubtitleStyle.copyWith(color: Colors.redAccent, fontWeight: FontWeight.bold),
                           ),
-                          onPressed: (){
-                            setState(() async {
-                              await NoteProvider.deleteNote(notes[index]['id']);
+                          onPressed: () async {
+                            await NoteProvider.deleteNote(notes[index]['id']);
+                            setState(() {
+
                             });
                           },
                           trailingIcon: Icon(Icons.delete, color: Colors.redAccent),
                           backgroundColor: theme.dialogBackgroundColor)
                     ],
                     child: NoteCard(
-                      title: notes[index]['title'],
+                      text: notes[index]['title'],
                       content: notes[index]['content'],
+                      editDate: notes[index]['editingdate'],
                     ),
                   );
                 }),

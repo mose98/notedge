@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
+import 'package:intl/intl.dart';
 import 'package:notedget/buttons/theme_button.dart';
 import 'package:notedget/components/animated_dialog.dart';
 import 'package:notedget/components/home_navbar.dart';
@@ -136,6 +137,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     ),
                     color: theme.primaryColor,
                     onPressed: () {
+                      final now = new DateTime.now();
+                      String dataText = DateFormat.yMMMd('it_IT').add_jm().format(now);
+
                       Navigator.push(
                         context,
                         PageTransition(
@@ -145,6 +149,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                             note: {
                               'title': '',
                               'content': '',
+                              'creationdate': dataText,
+                              'editingdate': dataText
                             },
                           ),
                         ),
