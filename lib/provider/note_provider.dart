@@ -2,21 +2,21 @@ import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 class NoteProvider {
-  static late Database db;
+  static Database? db;
 
   static Future open() async {
     db = await openDatabase(
       join(await getDatabasesPath(), 'notes.db'),
       version: 1,
-      onCreate: (Database db, int version) {
+      onCreate: (Database db, int version) async {
         db.execute('''
-            create table Notes(
-              id integer primary key autoincrement,
-              title text not null,
-              text not null
-            );
-          ''');
-      },
+          create table Notes(
+            id integer primary key autoincrement,
+            title text not null,
+            content text not null
+          );
+        ''');
+      }
     );
   }
 
@@ -24,15 +24,15 @@ class NoteProvider {
     if (db == null) {
       await open();
     }
-    return await db.query('Notes');
+    return await db!.query('Notes');
   }
 
   static Future insertNote(Map<String, dynamic> note) async {
-    await db.insert('Notes', note);
+    await db?.insert('Notes', note);
   }
 
   static Future updateNote(Map<String, dynamic> note) async {
-    await db.update(
+    await db?.update(
       'Notes',
       note,
       where: 'id = ?',
@@ -40,7 +40,7 @@ class NoteProvider {
   }
 
   static Future deleteNote(int id) async {
-    await db.delete(
+    await db?.delete(
       'Notes',
       where: 'id = ?',
       whereArgs: [id]);

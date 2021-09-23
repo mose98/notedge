@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
 import 'package:notedget/components/home_navbar.dart';
-import 'package:notedget/components/listview_card.dart';
+import 'package:notedget/components/note_card.dart';
 import 'package:notedget/components/note_inherited_widget.dart';
 import 'package:notedget/constants.dart';
 import 'package:notedget/provider/note_provider.dart';
@@ -29,7 +29,7 @@ class _NoteListState extends State<NoteList> {
           future: NoteProvider.getNoteList(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done) {
-              final notes = snapshot.data! as List<Map<String, dynamic>>;
+              final notes = snapshot.data as List<Map<String, dynamic>>;
               return GridView(
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
                 physics: BouncingScrollPhysics(),

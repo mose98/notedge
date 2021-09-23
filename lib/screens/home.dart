@@ -4,7 +4,7 @@ import 'package:focused_menu/modals.dart';
 import 'package:notedget/buttons/theme_button.dart';
 import 'package:notedget/components/animated_dialog.dart';
 import 'package:notedget/components/home_navbar.dart';
-import 'package:notedget/components/listview_card.dart';
+import 'package:notedget/components/note_card.dart';
 import 'package:notedget/components/notelist.dart';
 import 'package:notedget/screens/note_screen.dart';
 import 'package:notedget/screens/sidebar_screen.dart';
@@ -137,13 +137,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     color: theme.primaryColor,
                     onPressed: () {
                       Navigator.push(
-                          context,
-                          PageTransition(
-                              type: PageTransitionType.rightToLeft,
-                              child: NoteScreen(
-                                noteMode: NoteMode.New,
-                                note: null
-                              )));
+                        context,
+                        PageTransition(
+                          type: PageTransitionType.rightToLeft,
+                          child: NoteScreen(
+                            noteMode: NoteMode.New,
+                            note: {
+                              'title': '',
+                              'content': '',
+                            },
+                          ),
+                        ),
+                      );
                     },
                     child: Padding(
                       padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
