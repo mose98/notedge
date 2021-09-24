@@ -71,59 +71,54 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
         alignment: Alignment.center,
         child: Stack(
           children: [
+            SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(15, 30, 15, 15),
+                child: Align(
+                  alignment: Alignment.topRight,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        PageTransition(type: PageTransitionType.rightToLeft, child: SidebarScreen()),
+                      );
+                    },
+                    child: Icon(
+                      Icons.settings,
+                      color: theme.accentColor,
+                      size: MediaQuery.of(context).size.aspectRatio * 80,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            SafeArea(
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(15, 30, 15, 15),
+                child: Align(
+                  alignment: Alignment.topLeft,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Le mie note",
+                        style: kLargeTitleStyle,
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      NoteList(),
+                    ],
+                  ),
+                ),
+              ),
+            ),
             Align(
               alignment: Alignment.center,
               child: Icon(
                 Icons.pages,
                 color: theme.accentColor.withOpacity(0.1),
                 size: MediaQuery.of(context).size.aspectRatio * 500,
-              ),
-            ),
-            SafeArea(
-              bottom: false,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SidebarButtonNavBar(
-                    triggerAnimation: () {
-                      setState(() {
-                        sidebarHidden = !sidebarHidden;
-                      });
-                      sidebarAnimationController.forward();
-                    },
-                  ),
-                  NoteList(),
-                ],
-              ),
-            ),
-            IgnorePointer(
-              ignoring: sidebarHidden,
-              child: Stack(
-                children: [
-                  FadeTransition(
-                    opacity: fadeAnimation,
-                    child: GestureDetector(
-                      child: Container(
-                        color: Color.fromRGBO(36, 38, 41, 0.4),
-                        height: MediaQuery.of(context).size.height,
-                        width: MediaQuery.of(context).size.width,
-                      ),
-                      onTap: () {
-                        setState(() {
-                          sidebarHidden = !sidebarHidden;
-                        });
-                        sidebarAnimationController.reverse();
-                      },
-                    ),
-                  ),
-                  SlideTransition(
-                    position: sidebarAnimation,
-                    child: SafeArea(
-                      child: SidebarScreen(),
-                      bottom: false,
-                    ),
-                  ),
-                ],
               ),
             ),
             SafeArea(
@@ -150,7 +145,9 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               'title': '',
                               'content': '',
                               'creationdate': dataText,
-                              'editingdate': dataText
+                              'editingdate': dataText,
+                              'favorite': 0,
+                              'color': null,
                             },
                           ),
                         ),

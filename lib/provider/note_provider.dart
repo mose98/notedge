@@ -15,7 +15,9 @@ class NoteProvider {
             title text not null,
             content text not null,
             creationdate text not null,
-            editingdate text not null
+            editingdate text not null,
+            favorite integer not null,
+            color text,
           );
         ''');
       }

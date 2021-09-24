@@ -17,106 +17,129 @@ class NoteList extends StatefulWidget {
 }
 
 class _NoteListState extends State<NoteList> {
-
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Expanded(
         //height: MediaQuery.of(context).size.height * 80,
-        child: Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: FutureBuilder(
-          future: NoteProvider.getNoteList(),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              final notes = snapshot.data as List<Map<String, dynamic>>;
-              return GridView(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-                physics: BouncingScrollPhysics(),
-                children: List.generate(notes.length, (index) {
-                  return FocusedMenuHolder(
-                    blurSize: 4,
-                    menuWidth: MediaQuery.of(context).size.width * 0.5,
-                    animateMenuItems: false,
-                    blurBackgroundColor: theme.backgroundColor,
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          PageTransition(
-                              type: PageTransitionType.rightToLeft,
-                              child: NoteScreen(
-                                note: notes[index],
-                                noteMode: NoteMode.Modify,
-                              )));
-                    },
-                    menuItems: [
-                      FocusedMenuItem(
-                          title: Text(
-                            "Apri",
-                            style: kCardSubtitleStyle,
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                PageTransition(
-                                    type: PageTransitionType.rightToLeft,
-                                    child: NoteScreen(
-                                      note: notes[index],
-                                      noteMode: NoteMode.Modify,
-                                    )));
-                          },
-                          trailingIcon: Icon(
-                            Icons.open_in_new,
-                            color: theme.textSelectionColor,
-                          ),
-                          backgroundColor: theme.dialogBackgroundColor),
-                      FocusedMenuItem(
-                          title: Text(
-                            "Condividi",
-                            style: kCardSubtitleStyle,
-                          ),
-                          onPressed: () {},
-                          trailingIcon: Icon(
-                            Icons.ios_share,
-                            color: theme.textSelectionColor,
-                          ),
-                          backgroundColor: theme.dialogBackgroundColor),
-                      FocusedMenuItem(
-                          title: Text(
-                            "Aggiungi ai preferiti",
-                            style: kCardSubtitleStyle,
-                          ),
-                          onPressed: () {},
-                          trailingIcon: Icon(
-                            Icons.favorite_border_rounded,
-                            color: theme.textSelectionColor,
-                          ),
-                          backgroundColor: theme.dialogBackgroundColor),
-                      FocusedMenuItem(
-                          title: Text(
-                            "Elimina",
-                            style: kCardSubtitleStyle.copyWith(color: Colors.redAccent, fontWeight: FontWeight.bold),
-                          ),
-                          onPressed: () async {
-                            await NoteProvider.deleteNote(notes[index]['id']);
-                            setState(() {
-
-                            });
-                          },
-                          trailingIcon: Icon(Icons.delete, color: Colors.redAccent),
-                          backgroundColor: theme.dialogBackgroundColor)
-                    ],
-                    child: NoteCard(
-                      text: notes[index]['title'],
-                      content: notes[index]['content'],
-                      editDate: notes[index]['editingdate'],
-                    ),
-                  );
-                }),
-              );
-            }
-            return Center(child: CircularProgressIndicator());
-          }),
-    ));
+        child: FutureBuilder(
+            future: NoteProvider.getNoteList(),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done) {
+                final notes = snapshot.data as List<Map<String, dynamic>>;
+                return GridView(
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
+                  physics: BouncingScrollPhysics(),
+                  children: List.generate(notes.length, (index) {
+                    return FocusedMenuHolder(
+                      menuBoxDecoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(50),
+                        color: theme.backgroundColor
+                      ),
+                      blurSize: 2,
+                      menuWidth: MediaQuery.of(context).size.width * 0.5,
+                      animateMenuItems: false,
+                      //blurBackgroundColor: theme.backgroundColor,
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                                type: PageTransitionType.rightToLeft,
+                                child: NoteScreen(
+                                  note: notes[index],
+                                  noteMode: NoteMode.Modify,
+                                )));
+                      },
+                      menuItems: [
+                        FocusedMenuItem(
+                            title: Text(
+                              "Apri",
+                              style: kCardSubtitleStyle,
+                            ),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  PageTransition(
+                                      type: PageTransitionType.rightToLeft,
+                                      child: NoteScreen(
+                                        note: notes[index],
+                                        noteMode: NoteMode.Modify,
+                                      )));
+                            },
+                            trailingIcon: Icon(
+                              Icons.open_in_new,
+                              color: theme.textSelectionColor,
+                            ),
+                            backgroundColor: theme.dialogBackgroundColor),
+                        FocusedMenuItem(
+                            title: Text(
+                              "Condividi",
+                              style: kCardSubtitleStyle,
+                            ),
+                            onPressed: () {},
+                            trailingIcon: Icon(
+                              Icons.ios_share,
+                              color: theme.textSelectionColor,
+                            ),
+                            backgroundColor: theme.dialogBackgroundColor),
+                        FocusedMenuItem(
+                            title: Text(
+                              "Aggiungi ai preferiti",
+                              style: kCardSubtitleStyle,
+                            ),
+                            onPressed: () {
+                              notes[index]['favorite'] == 0
+                                  ? NoteProvider.updateNote({
+                                      'id': notes[index]['id'],
+                                      'title': notes[index]['title'],
+                                      'content': notes[index]['content'],
+                                      'creationdate': notes[index]['creationdate'],
+                                      'editingdate': notes[index]['editingdate'],
+                                      'favorite': 1,
+                                      'color': notes[index]['color'],
+                                    })
+                                  : NoteProvider.updateNote({
+                                      'id': notes[index]['id'],
+                                      'title': notes[index]['title'],
+                                      'content': notes[index]['content'],
+                                      'creationdate': notes[index]['creationdate'],
+                                      'editingdate': notes[index]['editingdate'],
+                                      'favorite': 0,
+                                      'color': notes[index]['color'],
+                                    });
+                              setState(() {});
+                            },
+                            trailingIcon: notes[index]['favorite'] == 0 ? Icon(
+                              Icons.favorite_border_rounded,
+                              color: theme.textSelectionColor,
+                            ) : Icon(
+                              Icons.favorite_rounded,
+                              color: theme.textSelectionColor,
+                            ),
+                            backgroundColor: theme.dialogBackgroundColor),
+                        FocusedMenuItem(
+                            title: Text(
+                              "Elimina",
+                              style: kCardSubtitleStyle.copyWith(color: Colors.redAccent, fontWeight: FontWeight.bold),
+                            ),
+                            onPressed: () async {
+                              await NoteProvider.deleteNote(notes[index]['id']);
+                              setState(() {});
+                            },
+                            trailingIcon: Icon(Icons.delete, color: Colors.redAccent),
+                            backgroundColor: theme.dialogBackgroundColor)
+                      ],
+                      child: NoteCard(
+                        text: notes[index]['title'],
+                        content: notes[index]['content'],
+                        editDate: notes[index]['editingdate'],
+                        favorite: notes[index]['favorite'],
+                      ),
+                    );
+                  }),
+                );
+              }
+              return Center(child: CircularProgressIndicator());
+            }));
   }
 }

@@ -50,6 +50,8 @@ class _NoteScreenState extends State<NoteScreen> {
                   'content': content,
                   'creationdate': widget.note['creationdate'],
                   'editingdate': widget.note['editingdate'],
+                  'favorite': widget.note['favorite'],
+                  'color': widget.note['color'],
                 },
               );
             }
@@ -66,6 +68,8 @@ class _NoteScreenState extends State<NoteScreen> {
                 'content': content,
                 'creationdate': widget.note['creationdate'],
                 'editingdate': dataText,
+                'favorite': widget.note['favorite'],
+                'color': widget.note['color'],
               });
             }
           }
