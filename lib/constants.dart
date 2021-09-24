@@ -52,7 +52,7 @@ var kSubtitleStyle = TextStyle(
   decoration: TextDecoration.none,
 );
 var kBodyLabelStyle = TextStyle(
-  fontSize: 16.0,
+  fontSize: 17.0,
   //color: Colors.black,
   fontFamily: Platform.isIOS ? 'SFUIDisplay' : 'Montserrat',
   decoration: TextDecoration.none,
@@ -85,7 +85,7 @@ var kSearchTextStyle = TextStyle(
 var kCardSubtitleStyle = TextStyle(
   fontFamily: Platform.isIOS ? 'SFUIDisplay' : 'Montserrat',
   //color: Color(0xE6FFFFFF),
-  fontSize: 13.0,
+  fontSize: 15.0,
   decoration: TextDecoration.none,
 );
 var kCaptionLabelStyle = TextStyle(

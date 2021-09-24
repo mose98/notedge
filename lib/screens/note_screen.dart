@@ -93,7 +93,7 @@ class _NoteScreenState extends State<NoteScreen> {
                     controller: titleController,
                     cursorColor: theme.iconTheme.color,
                     maxLines: 1,
-                    style: kCardTitleStyle,
+                    style: kTitle1Style,
                     decoration: InputDecoration(hintText: "Titolo", border: InputBorder.none),
                   ),
                 ),
