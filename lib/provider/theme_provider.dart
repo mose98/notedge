@@ -17,8 +17,8 @@ class MyTheme{
       primaryColor: Color(0xFF323E57),
       colorScheme: ColorScheme.dark(),
       fontFamily: 'Montserrat',
-      iconTheme: IconThemeData(color: Colors.yellow[700],),
-      buttonColor: Color(0xFF5D6884),
+      iconTheme: IconThemeData(color: Colors.blueAccent,),
+      buttonColor: Colors.blueAccent,
       accentColor: Colors.blueGrey,
   );
 
@@ -27,8 +27,8 @@ class MyTheme{
       primaryColor: Color(0xFFE7EEFB),
       colorScheme: ColorScheme.light(),
       fontFamily: 'Montserrat',
-      iconTheme: IconThemeData(color: Colors.yellow[600],),
-      buttonColor: Color(0xFFB4BBC6),
+      iconTheme: IconThemeData(color: Colors.blueAccent,),
+      buttonColor: Colors.blueAccent,
       accentColor: Colors.lightBlue[100],
   );
 }

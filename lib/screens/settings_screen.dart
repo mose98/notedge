@@ -5,8 +5,7 @@ import 'package:notedget/models/sidebar.dart';
 
 import '../constants.dart';
 
-class SidebarScreen extends StatelessWidget {
-
+class SettingScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);

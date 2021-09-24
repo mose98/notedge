@@ -28,10 +28,14 @@ class NoteCard extends StatelessWidget {
               leading: null,
               title: Text(
                 text ?? '',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: kCardTitleStyle,
               ),
               subtitle: Text(
                 editDate ?? '',
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
                 style: kCardSubtitleStyle,
               ),
               trailing: favorite == 0 ? Icon(Icons.favorite_border_rounded, color: Colors.blueAccent,) : Icon(Icons.favorite_rounded, color: Colors.blueAccent,),

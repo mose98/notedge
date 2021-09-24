@@ -8,7 +8,7 @@ import 'package:notedget/components/home_navbar.dart';
 import 'package:notedget/components/note_card.dart';
 import 'package:notedget/components/notelist.dart';
 import 'package:notedget/screens/note_screen.dart';
-import 'package:notedget/screens/sidebar_screen.dart';
+import 'package:notedget/screens/settings_screen.dart';
 import 'package:page_transition/page_transition.dart';
 
 import '../constants.dart';
@@ -80,7 +80,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     onTap: () {
                       Navigator.push(
                         context,
-                        PageTransition(type: PageTransitionType.rightToLeft, child: SidebarScreen()),
+                        PageTransition(type: PageTransitionType.rightToLeft, child: SettingScreen()),
                       );
                     },
                     child: Icon(
@@ -130,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(40),
                     ),
-                    color: theme.primaryColor,
+                    color: theme.buttonColor,
                     onPressed: () {
                       final now = new DateTime.now();
                       String dataText = DateFormat.yMMMd('it_IT').add_jm().format(now);
@@ -161,13 +161,13 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                         children: <Widget>[
                           Icon(
                             Icons.add,
-                            color: theme.iconTheme.color,
-                            size: 50,
+                            color: Colors.white,
+                            size: MediaQuery.of(context).size.aspectRatio * 50,
                           ),
                           SizedBox(
                             width: 5,
                           ),
-                          Text('Nuova nota')
+                          Text('Nuova nota', style: kSearchTextStyle.copyWith(color: Colors.white),)
                         ],
                       ),
                     ),
