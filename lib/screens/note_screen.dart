@@ -50,6 +50,7 @@ class _NoteScreenState extends State<NoteScreen> {
                 'editingdate': widget.note['editingdate'],
                 'favorite': widget.note['favorite'],
                 'color': widget.note['color'],
+                'alarmdate': widget.note['alarmdate'],
               },
             );
           }
@@ -68,6 +69,7 @@ class _NoteScreenState extends State<NoteScreen> {
               'editingdate': dataText,
               'favorite': widget.note['favorite'],
               'color': widget.note['color'],
+              'alarmdate': widget.note['alarmdate'],
             });
           }
         }
@@ -87,18 +89,6 @@ class _NoteScreenState extends State<NoteScreen> {
               padding: const EdgeInsets.all(20.0),
               child: Stack(
                 children: [
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: widget.note['favorite'] == 0
-                        ? Icon(
-                            Icons.favorite_border_rounded,
-                            color: Colors.blueAccent,
-                          )
-                        : Icon(
-                            Icons.favorite_rounded,
-                            color: Colors.blueAccent,
-                          ),
-                  ),
                   Column(
                     children: [
                       SizedBox(
@@ -123,6 +113,86 @@ class _NoteScreenState extends State<NoteScreen> {
                       )
                     ],
                   ),
+                  Align(
+                    alignment: Alignment.topRight,
+                    child:
+                    widget.note['favorite'] == 0
+                        ? GestureDetector(
+                      onTap: (){
+                        widget.note['favorite'] == 0
+                            ? NoteProvider.updateNote({
+                          'id': widget.note['id'],
+                          'title': widget.note['title'],
+                          'content': widget.note['content'],
+                          'creationdate': widget.note['creationdate'],
+                          'editingdate': widget.note['editingdate'],
+                          'favorite': 1,
+                          'color': widget.note['color'],
+                          'alarmdate': widget.note['alarmdate'],
+                        })
+                            : NoteProvider.updateNote({
+                          'id': widget.note['id'],
+                          'title': widget.note['title'],
+                          'content': widget.note['content'],
+                          'creationdate': widget.note['creationdate'],
+                          'editingdate': widget.note['editingdate'],
+                          'favorite': 0,
+                          'color': widget.note['color'],
+                          'alarmdate': widget.note['alarmdate'],
+                        });
+                        setState(() {});
+                      },
+                          child: Icon(
+                      Icons.favorite_border_rounded,
+                      color: Colors.blueAccent,
+                      size: MediaQuery.of(context).size.aspectRatio * 70,
+                    ),
+                        )
+                        : GestureDetector(
+                      onTap: (){
+                        widget.note['favorite'] == 0
+                            ? NoteProvider.updateNote({
+                          'id': widget.note['id'],
+                          'title': widget.note['title'],
+                          'content': widget.note['content'],
+                          'creationdate': widget.note['creationdate'],
+                          'editingdate': widget.note['editingdate'],
+                          'favorite': 1,
+                          'color': widget.note['color'],
+                          'alarmdate': widget.note['alarmdate'],
+                        })
+                            : NoteProvider.updateNote({
+                          'id': widget.note['id'],
+                          'title': widget.note['title'],
+                          'content': widget.note['content'],
+                          'creationdate': widget.note['creationdate'],
+                          'editingdate': widget.note['editingdate'],
+                          'favorite': 0,
+                          'color': widget.note['color'],
+                          'alarmdate': widget.note['alarmdate'],
+                        });
+                        setState(() {});
+                      },
+                          child: Icon(
+                      Icons.favorite_rounded,
+                      color: Colors.blueAccent,
+                      size: MediaQuery.of(context).size.aspectRatio * 70,
+                    ),
+                        ),
+                  ),
+                  widget.noteMode == NoteMode.Modify ? Align(
+                    alignment: Alignment.bottomRight,
+                    child: GestureDetector(
+                      onTap: () async {
+                        await NoteProvider.deleteNote(widget.note['id']);
+                        Navigator.of(context).pop();
+                      },
+                      child: Icon(
+                        Icons.delete, color: Colors.redAccent,
+                        size: MediaQuery.of(context).size.aspectRatio * 70,
+                      ),
+                    ),
+                  ) : Container(),
                 ],
               ),
             ),

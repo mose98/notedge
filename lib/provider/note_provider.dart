@@ -17,7 +17,8 @@ class NoteProvider {
             creationdate text not null,
             editingdate text not null,
             favorite integer not null,
-            color text,
+            color text not null,
+            alarmdate text not null
           );
         ''');
       }
@@ -25,9 +26,8 @@ class NoteProvider {
   }
 
   static Future<List<Map<String, dynamic>>> getNoteList() async {
-    if (db == null) {
-      await open();
-    }
+    await open();
+
     return await db!.query('Notes');
   }
 

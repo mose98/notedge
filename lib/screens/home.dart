@@ -147,7 +147,8 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               'creationdate': dataText,
                               'editingdate': dataText,
                               'favorite': 0,
-                              'color': null,
+                              'color': Colors.transparent.toString(),
+                              'alarmdate': 'none'
                             },
                           ),
                         ),

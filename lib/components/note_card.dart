@@ -5,20 +5,19 @@ class NoteCard extends StatelessWidget {
   String? text;
   String? content;
   String? editDate;
-  int? favorite;
 
-  NoteCard({this.text, this.content, this.editDate, this.favorite});
+  NoteCard({this.text, this.content, this.editDate});
 
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Padding(
-      padding: const EdgeInsets.all(2.0),
+      padding: const EdgeInsets.all(10.0),
       child: Container(
         width: MediaQuery.of(context).size.width * 0.10,
         height: MediaQuery.of(context).size.height * 0.2,
         decoration: BoxDecoration(
-          color: theme.highlightColor,
+          color: theme.accentColor,
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
         child: Column(
@@ -28,17 +27,12 @@ class NoteCard extends StatelessWidget {
               leading: null,
               title: Text(
                 text ?? '',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
                 style: kCardTitleStyle,
               ),
               subtitle: Text(
                 editDate ?? '',
-                maxLines: 1,
-                overflow: TextOverflow.ellipsis,
                 style: kCardSubtitleStyle,
               ),
-              trailing: favorite == 0 ? Icon(Icons.favorite_border_rounded, color: Colors.blueAccent,) : Icon(Icons.favorite_rounded, color: Colors.blueAccent,),
             ),
             Padding(
               padding: const EdgeInsets.all(10.0),
