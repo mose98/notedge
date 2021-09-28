@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:focused_menu/focused_menu.dart';
+import 'package:focused_menu/modals.dart';
 import 'package:intl/intl.dart';
+import 'package:notedget/components/note_card.dart';
 import 'package:notedget/components/note_inherited_widget.dart';
 import 'package:notedget/constants.dart';
 import 'package:notedget/provider/note_provider.dart';
 import 'package:notedget/screens/home.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:share/share.dart';
 
 class NoteScreen extends StatefulWidget {
   NoteMode noteMode;
@@ -115,84 +119,79 @@ class _NoteScreenState extends State<NoteScreen> {
                   ),
                   Align(
                     alignment: Alignment.topRight,
-                    child:
-                    widget.note['favorite'] == 0
-                        ? GestureDetector(
-                      onTap: (){
-                        widget.note['favorite'] == 0
-                            ? NoteProvider.updateNote({
-                          'id': widget.note['id'],
-                          'title': widget.note['title'],
-                          'content': widget.note['content'],
-                          'creationdate': widget.note['creationdate'],
-                          'editingdate': widget.note['editingdate'],
-                          'favorite': 1,
-                          'color': widget.note['color'],
-                          'alarmdate': widget.note['alarmdate'],
-                        })
-                            : NoteProvider.updateNote({
-                          'id': widget.note['id'],
-                          'title': widget.note['title'],
-                          'content': widget.note['content'],
-                          'creationdate': widget.note['creationdate'],
-                          'editingdate': widget.note['editingdate'],
-                          'favorite': 0,
-                          'color': widget.note['color'],
-                          'alarmdate': widget.note['alarmdate'],
-                        });
-                        setState(() {});
-                      },
-                          child: Icon(
-                      Icons.favorite_border_rounded,
-                      color: Colors.blueAccent,
-                      size: MediaQuery.of(context).size.aspectRatio * 70,
-                    ),
-                        )
-                        : GestureDetector(
-                      onTap: (){
-                        widget.note['favorite'] == 0
-                            ? NoteProvider.updateNote({
-                          'id': widget.note['id'],
-                          'title': widget.note['title'],
-                          'content': widget.note['content'],
-                          'creationdate': widget.note['creationdate'],
-                          'editingdate': widget.note['editingdate'],
-                          'favorite': 1,
-                          'color': widget.note['color'],
-                          'alarmdate': widget.note['alarmdate'],
-                        })
-                            : NoteProvider.updateNote({
-                          'id': widget.note['id'],
-                          'title': widget.note['title'],
-                          'content': widget.note['content'],
-                          'creationdate': widget.note['creationdate'],
-                          'editingdate': widget.note['editingdate'],
-                          'favorite': 0,
-                          'color': widget.note['color'],
-                          'alarmdate': widget.note['alarmdate'],
-                        });
-                        setState(() {});
-                      },
-                          child: Icon(
-                      Icons.favorite_rounded,
-                      color: Colors.blueAccent,
-                      size: MediaQuery.of(context).size.aspectRatio * 70,
-                    ),
-                        ),
+                    child: widget.noteMode == NoteMode.Modify
+                        ? FocusedMenuHolder(
+                            blurSize: 0,
+                            openWithTap: true,
+                            menuWidth: MediaQuery.of(context).size.width * 0.5,
+                            animateMenuItems: false,
+                            onPressed: () {},
+                            menuItems: [
+                              FocusedMenuItem(
+                                  title: Text(
+                                    "Condividi",
+                                    style: kCardSubtitleStyle,
+                                  ),
+                                  onPressed: () {
+                                    Share.share(widget.note['title'] + '\n\n' + widget.note['content']);
+                                  },
+                                  trailingIcon: Icon(
+                                    Icons.ios_share,
+                                    color: theme.textSelectionColor,
+                                  ),
+                                  backgroundColor: theme.dialogBackgroundColor),
+                              FocusedMenuItem(
+                                  title: Text(
+                                    "Preferiti",
+                                    style: kCardSubtitleStyle,
+                                  ),
+                                  onPressed: () {
+                                    widget.note['favorite'] == 0
+                                        ? NoteProvider.updateNote({
+                                            'id': widget.note['id'],
+                                            'title': widget.note['title'],
+                                            'content': widget.note['content'],
+                                            'creationdate': widget.note['creationdate'],
+                                            'editingdate': widget.note['editingdate'],
+                                            'favorite': 1,
+                                            'color': widget.note['color'],
+                                            'alarmdate': widget.note['alarmdate'],
+                                          })
+                                        : NoteProvider.updateNote({
+                                            'id': widget.note['id'],
+                                            'title': widget.note['title'],
+                                            'content': widget.note['content'],
+                                            'creationdate': widget.note['creationdate'],
+                                            'editingdate': widget.note['editingdate'],
+                                            'favorite': 0,
+                                            'color': widget.note['color'],
+                                            'alarmdate': widget.note['alarmdate'],
+                                          });
+                                    setState(() {});
+                                  },
+                                  trailingIcon: Icon(
+                                    widget.note['favorite'] == 0 ? Icons.favorite_border_rounded : Icons.favorite_rounded,
+                                    color: theme.textSelectionColor,
+                                  ),
+                                  backgroundColor: theme.dialogBackgroundColor),
+                              FocusedMenuItem(
+                                  title: Text(
+                                    "Elimina",
+                                    style: kCardSubtitleStyle.copyWith(color: Colors.redAccent, fontWeight: FontWeight.bold),
+                                  ),
+                                  onPressed: () async {
+                                    await NoteProvider.deleteNote(widget.note['id']);
+                                    Navigator.of(context).pop();
+                                  },
+                                  trailingIcon: Icon(Icons.delete, color: Colors.redAccent),
+                                  backgroundColor: theme.dialogBackgroundColor)
+                            ],
+                            child: Icon(
+                              Icons.more_vert_rounded,
+                              size: MediaQuery.of(context).size.aspectRatio * 70,
+                            ))
+                        : Container(),
                   ),
-                  widget.noteMode == NoteMode.Modify ? Align(
-                    alignment: Alignment.bottomRight,
-                    child: GestureDetector(
-                      onTap: () async {
-                        await NoteProvider.deleteNote(widget.note['id']);
-                        Navigator.of(context).pop();
-                      },
-                      child: Icon(
-                        Icons.delete, color: Colors.redAccent,
-                        size: MediaQuery.of(context).size.aspectRatio * 70,
-                      ),
-                    ),
-                  ) : Container(),
                 ],
               ),
             ),

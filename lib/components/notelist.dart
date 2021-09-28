@@ -8,6 +8,7 @@ import 'package:notedget/constants.dart';
 import 'package:notedget/provider/note_provider.dart';
 import 'package:notedget/screens/note_screen.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:share/share.dart';
 
 class NoteList extends StatefulWidget {
   const NoteList({Key? key}) : super(key: key);
@@ -75,7 +76,9 @@ class _NoteListState extends State<NoteList> {
                             "Condividi",
                             style: kCardSubtitleStyle,
                           ),
-                          onPressed: () {},
+                          onPressed: () {
+                            Share.share(notes[index]['title'] + '\n\n' + notes[index]['content']);
+                          },
                           trailingIcon: Icon(
                             Icons.ios_share,
                             color: theme.textSelectionColor,
@@ -111,7 +114,7 @@ class _NoteListState extends State<NoteList> {
                             setState(() {});
                           },
                           trailingIcon: Icon(
-                            Icons.favorite_border_rounded,
+                            notes[index]['favorite'] == 0 ? Icons.favorite_border_rounded : Icons.favorite_rounded,
                             color: theme.textSelectionColor,
                           ),
                           backgroundColor: theme.dialogBackgroundColor),
@@ -133,6 +136,7 @@ class _NoteListState extends State<NoteList> {
                       text: notes[index]['title'],
                       content: notes[index]['content'],
                       editDate: notes[index]['editingdate'],
+                      favorite: notes[index]['favorite'],
                     ),
                   );
                 }),

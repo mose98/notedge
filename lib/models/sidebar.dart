@@ -18,9 +18,4 @@ var sidebarItem = [
     subtitle: "cambia l'aspetto principale",
     widget: ChangeThemeButtonWidget()
   ),
-  SidebarItem(
-      title: "Vista note (griglia)",
-      subtitle: "scegli la vista delle note",
-      widget: ChangeViewButtonWidget()
-  ),
 ];
