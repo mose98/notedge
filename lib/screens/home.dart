@@ -147,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                               'creationdate': dataText,
                               'editingdate': dataText,
                               'favorite': 0,
-                              'color': Colors.transparent.toString(),
+                              'color': theme.scaffoldBackgroundColor.toString().split('(0x')[1].split(')')[0],
                               'alarmdate': 'none'
                             },
                           ),
@@ -168,7 +168,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                           SizedBox(
                             width: 5,
                           ),
-                          Text('Nuova nota', style: kSearchTextStyle.copyWith(color: Colors.white),)
+                          Text('Nuova nota', style: kNormalTextStyle.copyWith(color: Colors.white),)
                         ],
                       ),
                     ),

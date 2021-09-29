@@ -33,7 +33,7 @@ class SettingScreen extends StatelessWidget {
                       children: [
                         Text(
                           "Impostazioni",
-                          style: kCalloutLabelStyle.copyWith(fontWeight: FontWeight.w800),
+                          style: kNormalTextStyle.copyWith(fontWeight: FontWeight.w800),
                         ),
                       ],
                     )
@@ -44,24 +44,11 @@ class SettingScreen extends StatelessWidget {
                 ),
                 GestureDetector(
                   onTap: () {
-                    //Navigator.of(context).push(MaterialPageRoute(builder: (context) => IntroScreen(user: user)));
                   },
                   child: SidebarRow(
                     item: sidebarItem[0],
                   ),
                 ),
-                SizedBox(
-                  height: 32.0,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    //Navigator.of(context).push(MaterialPageRoute(builder: (context) => IntroScreen(user: user)));
-                  },
-                  child: SidebarRow(
-                    item: sidebarItem[1],
-                  ),
-                ),
-                Spacer(),
               ],
             ),
           ),

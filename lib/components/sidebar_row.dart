@@ -23,14 +23,14 @@ class SidebarRow extends StatelessWidget {
             Container(
               child: Text(
                 item.title,
-                style: kCalloutLabelStyle.copyWith(fontWeight: FontWeight.w500),
+                style: kNormalTextStyle.copyWith(fontWeight: FontWeight.w500),
               ),
             ),
             Padding(
               padding: EdgeInsets.symmetric(vertical: 5),
               child: Text(
                 item.subtitle,
-                style: kCalloutLabelStyle.copyWith(fontWeight: FontWeight.w300, fontSize: 13),
+                style: kNormalTextStyle.copyWith(fontWeight: FontWeight.w300, fontSize: 13),
               ),
             )
           ],

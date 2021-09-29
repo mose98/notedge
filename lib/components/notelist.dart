@@ -54,7 +54,7 @@ class _NoteListState extends State<NoteList> {
                       FocusedMenuItem(
                           title: Text(
                             "Apri",
-                            style: kCardSubtitleStyle,
+                            style: kNormalTextStyle,
                           ),
                           onPressed: () {
                             Navigator.push(
@@ -74,7 +74,7 @@ class _NoteListState extends State<NoteList> {
                       FocusedMenuItem(
                           title: Text(
                             "Condividi",
-                            style: kCardSubtitleStyle,
+                            style: kNormalTextStyle,
                           ),
                           onPressed: () {
                             Share.share(notes[index]['title'] + '\n\n' + notes[index]['content']);
@@ -87,7 +87,7 @@ class _NoteListState extends State<NoteList> {
                       FocusedMenuItem(
                           title: Text(
                             "Preferiti",
-                            style: kCardSubtitleStyle,
+                            style: kNormalTextStyle,
                           ),
                           onPressed: () {
                             notes[index]['favorite'] == 0
@@ -121,7 +121,7 @@ class _NoteListState extends State<NoteList> {
                       FocusedMenuItem(
                           title: Text(
                             "Elimina",
-                            style: kCardSubtitleStyle.copyWith(color: Colors.redAccent, fontWeight: FontWeight.bold),
+                            style: kNormalTextStyle.copyWith(color: Colors.redAccent, fontWeight: FontWeight.bold),
                           ),
                           onPressed: () async {
                             await NoteProvider.deleteNote(notes[index]['id']);
@@ -137,6 +137,7 @@ class _NoteListState extends State<NoteList> {
                       content: notes[index]['content'],
                       editDate: notes[index]['editingdate'],
                       favorite: notes[index]['favorite'],
+                      color: notes[index]['color'],
                     ),
                   );
                 }),

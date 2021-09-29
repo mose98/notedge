@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
 import 'package:intl/intl.dart';
+import 'package:notedget/components/color_picker.dart';
 import 'package:notedget/components/note_card.dart';
 import 'package:notedget/components/note_inherited_widget.dart';
 import 'package:notedget/constants.dart';
@@ -24,10 +25,16 @@ class _NoteScreenState extends State<NoteScreen> {
   TextEditingController titleController = new TextEditingController();
   TextEditingController contentController = new TextEditingController();
 
-  List<Map<String, String>> get _notes => NoteInheritedWidget.of(context).notes;
+  late Color _color;
+  var textColor;
+  late int favorite;
 
   @override
   void initState() {
+    favorite = widget.note['favorite'];
+
+    int value = int.parse(widget.note['color'], radix: 16);
+    _color = new Color(value);
     if (widget.noteMode == NoteMode.Modify) {
       titleController.text = widget.note['title'];
       contentController.text = widget.note['content'];
@@ -39,21 +46,22 @@ class _NoteScreenState extends State<NoteScreen> {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
+    textColor = _color.computeLuminance() > 0.5 ? Colors.black : Colors.white;
     return WillPopScope(
       onWillPop: () async {
         final title = titleController.text;
         final content = contentController.text;
 
         if (widget.noteMode == NoteMode.New) {
-          if (title != '' && content != '') {
+          if (title != '' || content != '') {
             NoteProvider.insertNote(
               {
                 'title': title,
                 'content': content,
                 'creationdate': widget.note['creationdate'],
                 'editingdate': widget.note['editingdate'],
-                'favorite': widget.note['favorite'],
-                'color': widget.note['color'],
+                'favorite': favorite,
+                'color': _color.toString().split('(0x')[1].split(')')[0],
                 'alarmdate': widget.note['alarmdate'],
               },
             );
@@ -71,8 +79,8 @@ class _NoteScreenState extends State<NoteScreen> {
               'content': content,
               'creationdate': widget.note['creationdate'],
               'editingdate': dataText,
-              'favorite': widget.note['favorite'],
-              'color': widget.note['color'],
+              'favorite': favorite,
+              'color': _color.toString().split('(0x')[1].split(')')[0],
               'alarmdate': widget.note['alarmdate'],
             });
           }
@@ -82,6 +90,7 @@ class _NoteScreenState extends State<NoteScreen> {
         return await true;
       },
       child: Scaffold(
+        backgroundColor: _color,
         resizeToAvoidBottomInset: false,
         extendBody: true,
         body: Container(
@@ -101,7 +110,7 @@ class _NoteScreenState extends State<NoteScreen> {
                           controller: titleController,
                           cursorColor: theme.iconTheme.color,
                           maxLines: 1,
-                          style: kTitle1Style,
+                          style: kTitleStyle.copyWith(color: textColor),
                           decoration: InputDecoration(hintText: "Titolo", border: InputBorder.none),
                         ),
                       ),
@@ -111,7 +120,7 @@ class _NoteScreenState extends State<NoteScreen> {
                           cursorColor: theme.iconTheme.color,
                           keyboardType: TextInputType.multiline,
                           maxLines: null,
-                          style: kBodyLabelStyle,
+                          style: kNormalTextStyle.copyWith(color: textColor),
                           decoration: InputDecoration(hintText: "Inserisci la nota...", border: InputBorder.none),
                         ),
                       )
@@ -130,7 +139,7 @@ class _NoteScreenState extends State<NoteScreen> {
                               FocusedMenuItem(
                                   title: Text(
                                     "Condividi",
-                                    style: kCardSubtitleStyle,
+                                    style: kNormalTextStyle,
                                   ),
                                   onPressed: () {
                                     Share.share(widget.note['title'] + '\n\n' + widget.note['content']);
@@ -143,41 +152,23 @@ class _NoteScreenState extends State<NoteScreen> {
                               FocusedMenuItem(
                                   title: Text(
                                     "Preferiti",
-                                    style: kCardSubtitleStyle,
+                                    style: kNormalTextStyle,
                                   ),
                                   onPressed: () {
-                                    widget.note['favorite'] == 0
-                                        ? NoteProvider.updateNote({
-                                            'id': widget.note['id'],
-                                            'title': widget.note['title'],
-                                            'content': widget.note['content'],
-                                            'creationdate': widget.note['creationdate'],
-                                            'editingdate': widget.note['editingdate'],
-                                            'favorite': 1,
-                                            'color': widget.note['color'],
-                                            'alarmdate': widget.note['alarmdate'],
-                                          })
-                                        : NoteProvider.updateNote({
-                                            'id': widget.note['id'],
-                                            'title': widget.note['title'],
-                                            'content': widget.note['content'],
-                                            'creationdate': widget.note['creationdate'],
-                                            'editingdate': widget.note['editingdate'],
-                                            'favorite': 0,
-                                            'color': widget.note['color'],
-                                            'alarmdate': widget.note['alarmdate'],
-                                          });
+                                    favorite == 0
+                                        ? favorite = 1
+                                        : favorite = 0;
                                     setState(() {});
                                   },
                                   trailingIcon: Icon(
-                                    widget.note['favorite'] == 0 ? Icons.favorite_border_rounded : Icons.favorite_rounded,
+                                    favorite == 0 ? Icons.favorite_border_rounded : Icons.favorite_rounded,
                                     color: theme.textSelectionColor,
                                   ),
                                   backgroundColor: theme.dialogBackgroundColor),
                               FocusedMenuItem(
                                   title: Text(
                                     "Elimina",
-                                    style: kCardSubtitleStyle.copyWith(color: Colors.redAccent, fontWeight: FontWeight.bold),
+                                    style: kNormalTextStyle.copyWith(color: Colors.redAccent, fontWeight: FontWeight.bold),
                                   ),
                                   onPressed: () async {
                                     await NoteProvider.deleteNote(widget.note['id']);
@@ -192,6 +183,25 @@ class _NoteScreenState extends State<NoteScreen> {
                             ))
                         : Container(),
                   ),
+                  Align(
+                      alignment: Alignment.bottomCenter,
+                      child: MyColorPicker(
+                          onSelectColor: (value) {
+                            setState(() {
+                              textColor = _color.computeLuminance() > 0.5 ? Colors.black : Colors.white;
+                              _color = value;
+                            });
+                          },
+                          availableColors: [
+                            theme.scaffoldBackgroundColor,
+                            new Color(Colors.green.value),
+                            new Color(Colors.yellow.value),
+                            new Color(Colors.greenAccent.value),
+                            new Color(Colors.purple.value),
+                            new Color(Colors.grey.value),
+                            new Color(Colors.teal.value),
+                          ],
+                          initialColor: _color))
                 ],
               ),
             ),
