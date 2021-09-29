@@ -7,7 +7,7 @@ class NoteProvider {
   static Future open() async {
     db = await openDatabase(
       join(await getDatabasesPath(), 'notes.db'),
-      version: 1,
+      version: 2,
       onCreate: (Database db, int version) async {
         db.execute('''
           create table Notes(
@@ -21,6 +21,11 @@ class NoteProvider {
             alarmdate text not null
           );
         ''');
+      },
+      onUpgrade: (Database db, int oldVersion, int newVersion) async{
+        if(oldVersion < newVersion){
+          await db.execute("alter table Notes add column alarmdate text");
+        }
       }
     );
   }
