@@ -16,7 +16,6 @@ var kTitleStyle = TextStyle(
 );
 var kBigTextStyle = TextStyle(
   fontFamily: Platform.isIOS ? 'SFUIDisplay' : 'Montserrat',
-  fontWeight: FontWeight.bold,
   //color: Colors.white,
   fontSize: 18.0,
   decoration: TextDecoration.none,

@@ -22,7 +22,7 @@ class NoteCard extends StatelessWidget {
         width: MediaQuery.of(context).size.width * 0.10,
         height: MediaQuery.of(context).size.height * 0.2,
         decoration: BoxDecoration(
-          color: c,
+          color: theme.accentColor,
           border: Border.all(width: 1, color: theme.accentColor),
           borderRadius: BorderRadius.all(Radius.circular(10)),
         ),
@@ -65,6 +65,20 @@ class NoteCard extends StatelessWidget {
                               favorite == 0 ? Icons.favorite_border_rounded : Icons.favorite_rounded,
                               color: Colors.redAccent
                             ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Align(
+                alignment: Alignment.bottomLeft,
+                child: Container(
+                width: 20,
+                height: 20,
+                decoration: BoxDecoration(
+                    color: Color(int.parse(color!, radix: 16)),
+                    shape: BoxShape.circle,
+                    border: Border.all(width: 2, color: Color(int.parse(color!, radix: 16)))),
+              ),
               ),
             )
           ],

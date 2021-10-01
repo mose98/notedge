@@ -3,12 +3,8 @@ import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
 import 'package:intl/intl.dart';
 import 'package:notedget/components/color_picker.dart';
-import 'package:notedget/components/note_card.dart';
-import 'package:notedget/components/note_inherited_widget.dart';
 import 'package:notedget/constants.dart';
 import 'package:notedget/provider/note_provider.dart';
-import 'package:notedget/screens/home.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:share/share.dart';
 
 class NoteScreen extends StatefulWidget {
@@ -90,6 +86,79 @@ class _NoteScreenState extends State<NoteScreen> {
         return await true;
       },
       child: Scaffold(
+        appBar: AppBar(
+          elevation: 0,
+          backgroundColor: _color,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back,color: textColor,),
+            enableFeedback: false,
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          title: GestureDetector(
+            onTap: () => Navigator.of(context).pop(),
+            child: Text(
+              "Le mie note",
+              style: kBigTextStyle.copyWith(color: textColor,),
+            ),
+          ),
+          titleSpacing: -10,
+          centerTitle: false,
+          actions: [
+            widget.noteMode == NoteMode.Modify
+                ? FocusedMenuHolder(
+                    blurSize: 0,
+                    openWithTap: true,
+                    menuWidth: MediaQuery.of(context).size.width * 0.5,
+                    animateMenuItems: false,
+                    onPressed: () {},
+                    menuItems: [
+                      FocusedMenuItem(
+                          title: Text(
+                            "Condividi",
+                            style: kNormalTextStyle,
+                          ),
+                          onPressed: () {
+                            Share.share(widget.note['title'] + '\n\n' + widget.note['content']);
+                          },
+                          trailingIcon: Icon(
+                            Icons.ios_share,
+                            color: theme.textSelectionColor,
+                          ),
+                          backgroundColor: theme.dialogBackgroundColor),
+                      FocusedMenuItem(
+                          title: Text(
+                            "Preferiti",
+                            style: kNormalTextStyle,
+                          ),
+                          onPressed: () {
+                            favorite == 0 ? favorite = 1 : favorite = 0;
+                            setState(() {});
+                          },
+                          trailingIcon: Icon(
+                            favorite == 0 ? Icons.favorite_border_rounded : Icons.favorite_rounded,
+                            color: theme.textSelectionColor,
+                          ),
+                          backgroundColor: theme.dialogBackgroundColor),
+                      FocusedMenuItem(
+                          title: Text(
+                            "Elimina",
+                            style: kNormalTextStyle.copyWith(color: Colors.redAccent, fontWeight: FontWeight.bold),
+                          ),
+                          onPressed: () async {
+                            await NoteProvider.deleteNote(widget.note['id']);
+                            Navigator.of(context).pop();
+                          },
+                          trailingIcon: Icon(Icons.delete, color: Colors.redAccent),
+                          backgroundColor: theme.dialogBackgroundColor)
+                    ],
+                    child: Icon(
+                      Icons.more_vert_rounded,
+                      color: textColor,
+                      size: MediaQuery.of(context).size.aspectRatio * 70,
+                    ))
+                : Container(),
+          ],
+        ),
         backgroundColor: _color,
         resizeToAvoidBottomInset: false,
         extendBody: true,
@@ -127,81 +196,25 @@ class _NoteScreenState extends State<NoteScreen> {
                     ],
                   ),
                   Align(
-                    alignment: Alignment.topRight,
-                    child: widget.noteMode == NoteMode.Modify
-                        ? FocusedMenuHolder(
-                            blurSize: 0,
-                            openWithTap: true,
-                            menuWidth: MediaQuery.of(context).size.width * 0.5,
-                            animateMenuItems: false,
-                            onPressed: () {},
-                            menuItems: [
-                              FocusedMenuItem(
-                                  title: Text(
-                                    "Condividi",
-                                    style: kNormalTextStyle,
-                                  ),
-                                  onPressed: () {
-                                    Share.share(widget.note['title'] + '\n\n' + widget.note['content']);
-                                  },
-                                  trailingIcon: Icon(
-                                    Icons.ios_share,
-                                    color: theme.textSelectionColor,
-                                  ),
-                                  backgroundColor: theme.dialogBackgroundColor),
-                              FocusedMenuItem(
-                                  title: Text(
-                                    "Preferiti",
-                                    style: kNormalTextStyle,
-                                  ),
-                                  onPressed: () {
-                                    favorite == 0
-                                        ? favorite = 1
-                                        : favorite = 0;
-                                    setState(() {});
-                                  },
-                                  trailingIcon: Icon(
-                                    favorite == 0 ? Icons.favorite_border_rounded : Icons.favorite_rounded,
-                                    color: theme.textSelectionColor,
-                                  ),
-                                  backgroundColor: theme.dialogBackgroundColor),
-                              FocusedMenuItem(
-                                  title: Text(
-                                    "Elimina",
-                                    style: kNormalTextStyle.copyWith(color: Colors.redAccent, fontWeight: FontWeight.bold),
-                                  ),
-                                  onPressed: () async {
-                                    await NoteProvider.deleteNote(widget.note['id']);
-                                    Navigator.of(context).pop();
-                                  },
-                                  trailingIcon: Icon(Icons.delete, color: Colors.redAccent),
-                                  backgroundColor: theme.dialogBackgroundColor)
-                            ],
-                            child: Icon(
-                              Icons.more_vert_rounded,
-                              size: MediaQuery.of(context).size.aspectRatio * 70,
-                            ))
-                        : Container(),
+                    alignment: Alignment.bottomCenter,
+                    child: MyColorPicker(
+                        onSelectColor: (value) {
+                          setState(() {
+                            textColor = _color.computeLuminance() > 0.5 ? Colors.black : Colors.white;
+                            _color = value;
+                          });
+                        },
+                        availableColors: [
+                          theme.scaffoldBackgroundColor,
+                          new Color(Colors.green.value),
+                          new Color(Colors.yellow.value),
+                          new Color(Colors.greenAccent.value),
+                          new Color(Colors.purple.value),
+                          new Color(Colors.grey.value),
+                          new Color(Colors.teal.value),
+                        ],
+                        initialColor: _color),
                   ),
-                  Align(
-                      alignment: Alignment.bottomCenter,
-                      child: MyColorPicker(
-                          onSelectColor: (value) {
-                            setState(() {
-                              textColor = _color.computeLuminance() > 0.5 ? Colors.black : Colors.white;
-                              _color = value;
-                            });
-                          },
-                          availableColors: [
-                            theme.scaffoldBackgroundColor,
-                            new Color(Colors.green.value),
-                            new Color(Colors.yellow.value),
-                            new Color(Colors.greenAccent.value),
-                            new Color(Colors.purple.value),
-                            new Color(Colors.grey.value),
-                            new Color(Colors.teal.value),
-                          ],
-                          initialColor: _color))
                 ],
               ),
             ),

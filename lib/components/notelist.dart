@@ -100,8 +100,7 @@ class _NoteListState extends State<NoteList> {
                               'favorite': 1,
                               'color': notes[index]['color'],
                               'alarmdate': notes[index]['alarmdate'],
-                            })
-                                : NoteProvider.updateNote({
+                            }) : NoteProvider.updateNote({
                               'id': notes[index]['id'],
                               'title': notes[index]['title'],
                               'content': notes[index]['content'],
