@@ -26,6 +26,17 @@ class MyTheme {
     ),
     buttonColor: Colors.blueAccent,
     accentColor: Colors.blueGrey,
+    textTheme: TextTheme(
+      headline1: TextStyle(
+        color: Colors.white
+      ),
+      bodyText1: TextStyle(
+        color: Colors.white
+      ),
+      subtitle1: TextStyle(
+        color: Colors.white
+      ),
+    )
   );
 
   static final lightTheme = ThemeData(
@@ -42,5 +53,16 @@ class MyTheme {
     ),
     buttonColor: Colors.blueAccent,
     accentColor: Colors.lightBlue[100],
+    textTheme: TextTheme(
+      headline1: TextStyle(
+        color: Colors.black
+      ),
+      bodyText1: TextStyle(
+        color: Colors.black
+      ),
+      subtitle1: TextStyle(
+        color: Colors.black
+      ),
+    )
   );
 }
