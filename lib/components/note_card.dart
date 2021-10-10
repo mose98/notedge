@@ -13,14 +13,10 @@ class NoteCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
-    int value = int.parse(color!, radix: 16);
-    Color c = new Color(value);
-    var textColor = c.computeLuminance() > 0.5 ? Colors.black : Colors.white;
     return Padding(
       padding: const EdgeInsets.all(10.0),
       child: Container(
-        width: MediaQuery.of(context).size.width * 0.10,
-        height: MediaQuery.of(context).size.height * 0.2,
+        height: MediaQuery.of(context).size.height / 4,
         decoration: BoxDecoration(
           color: theme.accentColor,
           border: Border.all(width: 1, color: theme.accentColor),
@@ -37,13 +33,13 @@ class NoteCard extends StatelessWidget {
                     text ?? '',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: kBigTextStyle.copyWith(color: textColor),
+                    style: kBigTextStyle,
                   ),
                   subtitle: Text(
                     editDate ?? '',
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: kSmallTextStyle.copyWith(color: textColor),
+                    style: kSmallTextStyle,
                   ),
                 ),
                 Padding(
@@ -52,9 +48,9 @@ class NoteCard extends StatelessWidget {
                     content ?? '',
                     maxLines: 3,
                     overflow: TextOverflow.ellipsis,
-                    style: kNormalTextStyle.copyWith(color: textColor),
+                    style: kNormalTextStyle,
                   ),
-                )
+                ),
               ],
             ),
             Padding(

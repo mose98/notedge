@@ -1,3 +1,4 @@
+
 import 'package:flutter/material.dart';
 import 'package:notedget/components/sidebar_row.dart';
 import 'package:notedget/models/sidebar.dart';
@@ -10,20 +11,9 @@ class SettingScreen extends StatelessWidget {
     var theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
-        elevation: 0,
         backgroundColor: theme.scaffoldBackgroundColor,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () => Navigator.of(context).pop(),
-        ),
-        title: GestureDetector(
-          onTap: () => Navigator.of(context).pop(),
-          child: Text(
-            "Le mie note",
-          ),
-        ),
-        titleSpacing: -10,
-        centerTitle: false,
+        elevation: 0,
+        foregroundColor: theme.textTheme.headline1!.color,
       ),
       body: Center(
         child: Container(
@@ -58,7 +48,8 @@ class SettingScreen extends StatelessWidget {
                   height: MediaQuery.of(context).size.height * 0.08,
                 ),
                 GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                  },
                   child: SidebarRow(
                     item: sidebarItem[0],
                   ),

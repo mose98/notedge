@@ -21,6 +21,8 @@ class _NoteListState extends State<NoteList> {
 
   @override
   Widget build(BuildContext context) {
+    var smallestDimension = MediaQuery.of(context).size.shortestSide;
+    final useMobileLayout = smallestDimension < 600;
     var theme = Theme.of(context);
     return Expanded(
         //height: MediaQuery.of(context).size.height * 80,
@@ -36,10 +38,9 @@ class _NoteListState extends State<NoteList> {
                 physics: BouncingScrollPhysics(),
                 children: List.generate(notes.length, (index) {
                   return FocusedMenuHolder(
-                    blurSize: 4,
+                    blurSize: 0,
                     menuWidth: MediaQuery.of(context).size.width * 0.5,
                     animateMenuItems: false,
-                    blurBackgroundColor: theme.backgroundColor,
                     onPressed: () {
                       Navigator.push(
                           context,

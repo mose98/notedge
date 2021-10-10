@@ -113,14 +113,6 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 ),
               ),
             ),
-            Align(
-              alignment: Alignment.center,
-              child: Icon(
-                Icons.pages,
-                color: theme.accentColor.withOpacity(0.1),
-                size: MediaQuery.of(context).size.aspectRatio * 500,
-              ),
-            ),
             SafeArea(
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(0, 10, 20, 10),
