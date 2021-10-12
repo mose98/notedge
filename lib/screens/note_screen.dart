@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:focused_menu/focused_menu.dart';
 import 'package:focused_menu/modals.dart';
 import 'package:intl/intl.dart';
 import 'package:notedget/components/color_picker.dart';
-import 'package:notedget/components/note_card.dart';
-import 'package:notedget/components/note_inherited_widget.dart';
 import 'package:notedget/constants.dart';
 import 'package:notedget/provider/note_provider.dart';
-import 'package:notedget/screens/home.dart';
-import 'package:page_transition/page_transition.dart';
 import 'package:share/share.dart';
+
+import '../main.dart';
 
 class NoteScreen extends StatefulWidget {
   NoteMode noteMode;
@@ -31,7 +30,6 @@ class _NoteScreenState extends State<NoteScreen> {
   late int favorite;
   late DateTime date;
 
-
   @override
   void initState() {
     favorite = widget.note['favorite'];
@@ -43,14 +41,14 @@ class _NoteScreenState extends State<NoteScreen> {
       contentController.text = widget.note['content'];
     }
 
-    try{
+    try {
       date = widget.note['alarmdate'];
-    }
-    catch(Exception) {
+    } catch (Exception) {
       date = DateTime.now();
     }
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
@@ -93,6 +91,7 @@ class _NoteScreenState extends State<NoteScreen> {
             });
           }
         }
+        scheduleAlarm();
         Navigator.of(context).pop();
 
         return await true;
@@ -111,12 +110,14 @@ class _NoteScreenState extends State<NoteScreen> {
                 onPressed: () {},
                 menuItems: [
                   FocusedMenuItem(
-                    title: Text(
-                      "Allarme",
-                          style: kNormalTextStyle,
-                    ),
-                    onPressed: (){
-                      DatePicker.showDateTimePicker(context,
+                      title: Text(
+                        "Allarme",
+                        style: kNormalTextStyle,
+                      ),
+                      onPressed: () {
+                        DatePicker.showDateTimePicker(
+                          context,
+                          theme: DatePickerTheme(backgroundColor: theme.accentColor),
                           showTitleActions: true,
                           minTime: DateTime(DateTime.now().year, DateTime.now().month, DateTime.now().day),
                           maxTime: DateTime(2050, 12, 31),
@@ -125,19 +126,15 @@ class _NoteScreenState extends State<NoteScreen> {
                           },
                           currentTime: widget.note[date],
                           locale: LocaleType.it,
-                      );
-                    },
-                    trailingIcon: Icon(
-                      Icons.alarm_add_rounded,
-                      color: theme.textSelectionColor,
-                    ),
-                      backgroundColor: theme.dialogBackgroundColor
-                  ),
-                  FocusedMenuItem(
-                      title: Text(
-                          "Condividi",
-                          style: kNormalTextStyle
+                        );
+                      },
+                      trailingIcon: Icon(
+                        Icons.alarm_add_rounded,
+                        color: theme.textSelectionColor,
                       ),
+                      backgroundColor: theme.dialogBackgroundColor),
+                  FocusedMenuItem(
+                      title: Text("Condividi", style: kNormalTextStyle),
                       onPressed: () {
                         Share.share(widget.note['title'] + '\n\n' + widget.note['content']);
                       },
@@ -152,9 +149,7 @@ class _NoteScreenState extends State<NoteScreen> {
                         style: kNormalTextStyle,
                       ),
                       onPressed: () {
-                        favorite == 0
-                            ? favorite = 1
-                            : favorite = 0;
+                        favorite == 0 ? favorite = 1 : favorite = 0;
                         setState(() {});
                       },
                       trailingIcon: Icon(
@@ -163,11 +158,12 @@ class _NoteScreenState extends State<NoteScreen> {
                       ),
                       backgroundColor: theme.dialogBackgroundColor),
                   FocusedMenuItem(
-                      title: Text(
-                          "ELimina",
+                      title: Text("ELimina",
                           //style: kNormalTextStyle.copyWith(color: Colors.redAccent, fontWeight: FontWeight.bold),
-                          style: kNormalTextStyle.copyWith(color: Colors.redAccent, fontWeight: FontWeight.bold,)
-                      ),
+                          style: kNormalTextStyle.copyWith(
+                            color: Colors.redAccent,
+                            fontWeight: FontWeight.bold,
+                          )),
                       onPressed: () async {
                         await NoteProvider.deleteNote(widget.note['id']);
                         Navigator.of(context).pop();
@@ -244,4 +240,38 @@ class _NoteScreenState extends State<NoteScreen> {
       ),
     );
   }
+
+  void scheduleAlarm() async {
+    var scheduledNotificationDateTime = DateTime.now().add(Duration(seconds: 10));
+    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+      'alarm_notif',
+      'alarm_notif',
+      channelShowBadge: true,
+      channelDescription: 'Channel for Alarm notification',
+      ongoing: true,
+      showWhen: true,
+      priority: Priority.high,
+      importance: Importance.high,
+      icon: 'app_icon',
+      sound: RawResourceAndroidNotificationSound('a_long_cold_sting'),
+      largeIcon: DrawableResourceAndroidBitmap('app_icon'),
+    );
+
+    var iOSPlatformChannelSpecifics = IOSNotificationDetails(
+      sound: 'a_long_cold_sting.wav',
+      presentAlert: true,
+      presentBadge: true,
+      presentSound: true,
+    );
+    var platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+      iOS: iOSPlatformChannelSpecifics,
+    );
+
+    await flutterLocalNotificationsPlugin.schedule(0, 'Office', "hi", scheduledNotificationDateTime, platformChannelSpecifics);
+  }
+
+  void onSaveAlarm() {}
+
+  void deleteAlarm(int id) {}
 }
