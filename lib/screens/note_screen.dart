@@ -42,7 +42,7 @@ class _NoteScreenState extends State<NoteScreen> {
     }
 
     try {
-      date = widget.note['alarmdate'];
+      date = widget.note['alarmdate'] as DateTime;
     } catch (Exception) {
       date = DateTime.now();
     }
@@ -68,7 +68,7 @@ class _NoteScreenState extends State<NoteScreen> {
                 'editingdate': widget.note['editingdate'],
                 'favorite': favorite,
                 'color': _color.toString().split('(0x')[1].split(')')[0],
-                'alarmdate': date,
+                'alarmdate': date.toString(),
               },
             );
           }
@@ -87,7 +87,7 @@ class _NoteScreenState extends State<NoteScreen> {
               'editingdate': dataText,
               'favorite': favorite,
               'color': _color.toString().split('(0x')[1].split(')')[0],
-              'alarmdate': date,
+              'alarmdate': date.toString(),
             });
           }
         }
@@ -124,7 +124,7 @@ class _NoteScreenState extends State<NoteScreen> {
                           onConfirm: (_date) {
                             date = _date;
                           },
-                          currentTime: widget.note[date],
+                          currentTime: date,
                           locale: LocaleType.it,
                         );
                       },
@@ -243,7 +243,7 @@ class _NoteScreenState extends State<NoteScreen> {
 
   void scheduleAlarm() async {
     var scheduledNotificationDateTime = DateTime.now().add(Duration(seconds: 10));
-    var androidPlatformChannelSpecifics = AndroidNotificationDetails(
+    var androidPlatformChannelSpecifics = const AndroidNotificationDetails(
       'alarm_notif',
       'alarm_notif',
       channelShowBadge: true,
@@ -257,7 +257,7 @@ class _NoteScreenState extends State<NoteScreen> {
       largeIcon: DrawableResourceAndroidBitmap('app_icon'),
     );
 
-    var iOSPlatformChannelSpecifics = IOSNotificationDetails(
+    var iOSPlatformChannelSpecifics = const IOSNotificationDetails(
       sound: 'a_long_cold_sting.wav',
       presentAlert: true,
       presentBadge: true,
@@ -271,7 +271,27 @@ class _NoteScreenState extends State<NoteScreen> {
     await flutterLocalNotificationsPlugin.schedule(0, 'Office', "hi", scheduledNotificationDateTime, platformChannelSpecifics);
   }
 
-  void onSaveAlarm() {}
+  void onSaveAlarm() {
+    DateTime scheduleAlarmDateTime;
+    if (date.isAfter(DateTime.now()))
+      scheduleAlarmDateTime = date;
+    else
+      scheduleAlarmDateTime = date.add(Duration(days: 1));
 
-  void deleteAlarm(int id) {}
+    var alarmInfo = AlarmInfo(
+      alarmDateTime: scheduleAlarmDateTime,
+      gradientColorIndex: _currentAlarms.length,
+      title: 'alarm',
+    );
+    _alarmHelper.insertAlarm(alarmInfo);
+    scheduleAlarm(scheduleAlarmDateTime, alarmInfo);
+    Navigator.pop(context);
+    loadAlarms();
+  }
+
+  void deleteAlarm(int id) {
+    _alarmHelper.delete(id);
+    //unsubscribe for notification
+    loadAlarms();
+  }
 }
