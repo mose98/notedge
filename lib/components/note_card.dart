@@ -7,8 +7,10 @@ class NoteCard extends StatelessWidget {
   String? editDate;
   int? favorite;
   String? color;
+  int? archived;
+  String? id;
 
-  NoteCard({this.text, this.content, this.editDate, this.favorite, this.color});
+  NoteCard({this.text, this.content, this.editDate, this.favorite, this.color, this.archived, this.id});
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +54,16 @@ class NoteCard extends StatelessWidget {
                   ),
                 ),
               ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Align(
+                alignment: Alignment.bottomCenter,
+                child: Icon(
+                    archived == 0 ? null : Icons.archive_rounded,
+                    color: Colors.blueAccent
+                ),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),

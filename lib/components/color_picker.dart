@@ -8,9 +8,9 @@ class MyColorPicker extends StatefulWidget {
 
   MyColorPicker(
       {required this.onSelectColor,
-      required this.availableColors,
-      required this.initialColor,
-      this.circleItem = true});
+        required this.availableColors,
+        required this.initialColor,
+        this.circleItem = true});
 
   @override
   _MyColorPickerState createState() => _MyColorPickerState();
@@ -52,11 +52,11 @@ class _MyColorPickerState extends State<MyColorPicker> {
                   decoration: BoxDecoration(color: itemColor, shape: widget.circleItem == true ? BoxShape.circle : BoxShape.rectangle, border: Border.all(width: 2, color: Colors.grey[300]!)),
                   child: itemColor == _pickedColor
                       ? Center(
-                          child: Icon(
-                            Icons.check,
-                            color: Colors.white,
-                          ),
-                        )
+                    child: Icon(
+                      Icons.check,
+                      color: Colors.white,
+                    ),
+                  )
                       : Container(),
                 ),
               ),
