@@ -218,18 +218,50 @@ class _NoteScreenState extends State<NoteScreen> {
                       child: MyColorPicker(
                           onSelectColor: (value) {
                             setState(() {
-                              textColor = _color.computeLuminance() > 0.5 ? Colors.black : Colors.white;
-                              _color = value;
+                              if (_color == value)
+                                _color = theme.scaffoldBackgroundColor;
+                              else {
+                                textColor = _color.computeLuminance() > 0.5 ? Colors.black : Colors.white;
+                                _color = value;
+                              }
                             });
                           },
                           availableColors: [
-                            theme.scaffoldBackgroundColor,
-                            new Color(Colors.green.value),
-                            new Color(Colors.yellow.value),
-                            new Color(Colors.greenAccent.value),
-                            new Color(Colors.purple.value),
-                            new Color(Colors.grey.value),
-                            new Color(Colors.teal.value),
+                            new Color(Colors.green[200]!.value),
+                            new Color(Colors.yellow[200]!.value),
+                            new Color(Colors.red[200]!.value),
+                            new Color(Colors.purple[200]!.value),
+                            new Color(Colors.grey[200]!.value),
+                            new Color(Colors.teal[200]!.value),
+                            new Color(Colors.blue[200]!.value),
+                            new Color(Colors.orange[200]!.value),
+                            new Color(Colors.amber[200]!.value),
+                            new Color(Colors.blueGrey[200]!.value),
+                            new Color(Colors.brown[200]!.value),
+                            new Color(Colors.cyan[200]!.value),
+                            new Color(Colors.deepOrange[200]!.value),
+                            new Color(Colors.deepPurple[200]!.value),
+                            new Color(Colors.lightBlue[200]!.value),
+                            new Color(Colors.lightGreen[200]!.value),
+                            new Color(Colors.lime[200]!.value),
+                            new Color(Colors.pink[200]!.value),
+                            new Color(Colors.yellow[200]!.value),
+                            new Color(Colors.amberAccent[200]!.value),
+                            new Color(Colors.orangeAccent[200]!.value),
+                            new Color(Colors.greenAccent[200]!.value),
+                            new Color(Colors.redAccent[200]!.value),
+                            new Color(Colors.blueAccent[200]!.value),
+                            new Color(Colors.cyanAccent[200]!.value),
+                            new Color(Colors.deepOrangeAccent[200]!.value),
+                            new Color(Colors.deepPurpleAccent[200]!.value),
+                            new Color(Colors.indigoAccent[200]!.value),
+                            new Color(Colors.lightBlueAccent[200]!.value),
+                            new Color(Colors.lightGreenAccent[200]!.value),
+                            new Color(Colors.limeAccent[200]!.value),
+                            new Color(Colors.pinkAccent[200]!.value),
+                            new Color(Colors.purpleAccent[200]!.value),
+                            new Color(Colors.tealAccent[200]!.value),
+                            new Color(Colors.yellowAccent[200]!.value),
                           ],
                           initialColor: _color))
                 ],
@@ -272,26 +304,26 @@ class _NoteScreenState extends State<NoteScreen> {
   }
 
   void onSaveAlarm() {
-    DateTime scheduleAlarmDateTime;
-    if (date.isAfter(DateTime.now()))
-      scheduleAlarmDateTime = date;
-    else
-      scheduleAlarmDateTime = date.add(Duration(days: 1));
-
-    var alarmInfo = AlarmInfo(
-      alarmDateTime: scheduleAlarmDateTime,
-      gradientColorIndex: _currentAlarms.length,
-      title: 'alarm',
-    );
-    _alarmHelper.insertAlarm(alarmInfo);
-    scheduleAlarm(scheduleAlarmDateTime, alarmInfo);
-    Navigator.pop(context);
-    loadAlarms();
+    // DateTime scheduleAlarmDateTime;
+    // if (date.isAfter(DateTime.now()))
+    //   scheduleAlarmDateTime = date;
+    // else
+    //   scheduleAlarmDateTime = date.add(Duration(days: 1));
+    //
+    // var alarmInfo = AlarmInfo(
+    //   alarmDateTime: scheduleAlarmDateTime,
+    //   gradientColorIndex: _currentAlarms.length,
+    //   title: 'alarm',
+    // );
+    // _alarmHelper.insertAlarm(alarmInfo);
+    // scheduleAlarm(scheduleAlarmDateTime, alarmInfo);
+    // Navigator.pop(context);
+    // loadAlarms();
   }
 
   void deleteAlarm(int id) {
-    _alarmHelper.delete(id);
-    //unsubscribe for notification
-    loadAlarms();
+    // _alarmHelper.delete(id);
+    // //unsubscribe for notification
+    // loadAlarms();
   }
 }

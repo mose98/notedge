@@ -32,12 +32,8 @@ class _MyColorPickerState extends State<MyColorPicker> {
       height: 50,
       width: widget.availableColors.length * 40,
       child: Center(
-        child: GridView.builder(
-          gridDelegate: SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 30,
-              childAspectRatio: 1 / 1,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10),
+        child: ListView.builder(
+          scrollDirection: Axis.horizontal,
           itemCount: widget.availableColors.length,
           itemBuilder: (context, index) {
             final itemColor = widget.availableColors[index];
@@ -48,23 +44,21 @@ class _MyColorPickerState extends State<MyColorPicker> {
                   _pickedColor = itemColor;
                 });
               },
-              child: Container(
-                width: 10,
-                height: 10,
-                decoration: BoxDecoration(
-                    color: itemColor,
-                    shape: widget.circleItem == true
-                        ? BoxShape.circle
-                        : BoxShape.rectangle,
-                    border: Border.all(width: 2, color: Colors.grey[300]!)),
-                child: itemColor == _pickedColor
-                    ? Center(
-                        child: Icon(
-                          Icons.check,
-                          color: Colors.white,
-                        ),
-                      )
-                    : Container(),
+              child: Padding(
+                padding: const EdgeInsets.all(3.0),
+                child: Container(
+                  width: 30,
+                  height: 30,
+                  decoration: BoxDecoration(color: itemColor, shape: widget.circleItem == true ? BoxShape.circle : BoxShape.rectangle, border: Border.all(width: 2, color: Colors.grey[300]!)),
+                  child: itemColor == _pickedColor
+                      ? Center(
+                          child: Icon(
+                            Icons.check,
+                            color: Colors.white,
+                          ),
+                        )
+                      : Container(),
+                ),
               ),
             );
           },

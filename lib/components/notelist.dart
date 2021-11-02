@@ -1,14 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:focused_menu/focused_menu.dart';
-import 'package:focused_menu/modals.dart';
-import 'package:notedget/components/home_navbar.dart';
+import 'package:notedget/components/modals/floating_modal.dart';
 import 'package:notedget/components/note_card.dart';
-import 'package:notedget/components/note_inherited_widget.dart';
 import 'package:notedget/constants.dart';
 import 'package:notedget/provider/note_provider.dart';
 import 'package:notedget/screens/note_screen.dart';
 import 'package:page_transition/page_transition.dart';
-import 'package:share/share.dart';
+
+import 'modal_fit.dart';
 
 class NoteList extends StatefulWidget {
   const NoteList({Key? key}) : super(key: key);
@@ -18,7 +16,6 @@ class NoteList extends StatefulWidget {
 }
 
 class _NoteListState extends State<NoteList> {
-
   @override
   Widget build(BuildContext context) {
     var smallestDimension = MediaQuery.of(context).size.shortestSide;
@@ -37,107 +34,33 @@ class _NoteListState extends State<NoteList> {
                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
                 physics: BouncingScrollPhysics(),
                 children: List.generate(notes.length, (index) {
-                  return FocusedMenuHolder(
-                    blurSize: 0,
-                    menuWidth: MediaQuery.of(context).size.width * 0.5,
-                    animateMenuItems: false,
-                    onPressed: () {
-                      Navigator.push(
-                          context,
-                          PageTransition(
-                              type: PageTransitionType.rightToLeft,
-                              child: NoteScreen(
-                                note: notes[index],
-                                noteMode: NoteMode.Modify,
-                              )));
+                  return GestureDetector(
+                    onLongPress: () {
+                      showFloatingModalBottomSheet(
+                        //expand: false,
+                        context: context,
+                        backgroundColor: Colors.transparent,
+                        builder: (context) => ModalFit(),
+                      );
                     },
-                    menuItems: [
-                      FocusedMenuItem(
-                          title: Text(
-                            "Apri",
-                            style: kNormalTextStyle,
-                          ),
-                          onPressed: () {
-                            Navigator.push(
-                                context,
-                                PageTransition(
-                                    type: PageTransitionType.rightToLeft,
-                                    child: NoteScreen(
-                                      note: notes[index],
-                                      noteMode: NoteMode.Modify,
-                                    )));
-                          },
-                          trailingIcon: Icon(
-                            Icons.open_in_new,
-                            color: theme.textSelectionColor,
-                          ),
-                          backgroundColor: theme.dialogBackgroundColor),
-                      FocusedMenuItem(
-                          title: Text(
-                            "Condividi",
-                            style: kNormalTextStyle,
-                          ),
-                          onPressed: () {
-                            Share.share(notes[index]['title'] + '\n\n' + notes[index]['content']);
-                          },
-                          trailingIcon: Icon(
-                            Icons.ios_share,
-                            color: theme.textSelectionColor,
-                          ),
-                          backgroundColor: theme.dialogBackgroundColor),
-                      FocusedMenuItem(
-                          title: Text(
-                            "Preferiti",
-                            style: kNormalTextStyle,
-                          ),
-                          onPressed: () {
-                            notes[index]['favorite'] == 0
-                                ? NoteProvider.updateNote({
-                              'id': notes[index]['id'],
-                              'title': notes[index]['title'],
-                              'content': notes[index]['content'],
-                              'creationdate': notes[index]['creationdate'],
-                              'editingdate': notes[index]['editingdate'],
-                              'favorite': 1,
-                              'color': notes[index]['color'],
-                              'alarmdate': notes[index]['alarmdate'],
-                            }) : NoteProvider.updateNote({
-                              'id': notes[index]['id'],
-                              'title': notes[index]['title'],
-                              'content': notes[index]['content'],
-                              'creationdate': notes[index]['creationdate'],
-                              'editingdate': notes[index]['editingdate'],
-                              'favorite': 0,
-                              'color': notes[index]['color'],
-                              'alarmdate': notes[index]['alarmdate'],
-                            });
-                            setState(() {});
-                          },
-                          trailingIcon: Icon(
-                            notes[index]['favorite'] == 0 ? Icons.favorite_border_rounded : Icons.favorite_rounded,
-                            color: theme.textSelectionColor,
-                          ),
-                          backgroundColor: theme.dialogBackgroundColor),
-                      FocusedMenuItem(
-                          title: Text(
-                            "Elimina",
-                            style: kNormalTextStyle.copyWith(color: Colors.redAccent, fontWeight: FontWeight.bold),
-                          ),
-                          onPressed: () async {
-                            await NoteProvider.deleteNote(notes[index]['id']);
-                            setState(() {
-
-                            });
-                          },
-                          trailingIcon: Icon(Icons.delete, color: Colors.redAccent),
-                          backgroundColor: theme.dialogBackgroundColor)
-                    ],
-                    child: NoteCard(
-                      text: notes[index]['title'],
-                      content: notes[index]['content'],
-                      editDate: notes[index]['editingdate'],
-                      favorite: notes[index]['favorite'],
-                      color: notes[index]['color'],
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            PageTransition(
+                                type: PageTransitionType.rightToLeft,
+                                child: NoteScreen(
+                                  note: notes[index],
+                                  noteMode: NoteMode.Modify,
+                                )));
+                      },
+                      child: NoteCard(
+                        text: notes[index]['title'],
+                        content: notes[index]['content'],
+                        editDate: notes[index]['editingdate'],
+                        favorite: notes[index]['favorite'],
+                        color: notes[index]['color'],
+                      ),
                     ),
                   );
                 }),

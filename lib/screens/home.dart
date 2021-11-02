@@ -1,11 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:focused_menu/focused_menu.dart';
-import 'package:focused_menu/modals.dart';
 import 'package:intl/intl.dart';
-import 'package:notedget/buttons/theme_button.dart';
-import 'package:notedget/components/animated_dialog.dart';
-import 'package:notedget/components/home_navbar.dart';
-import 'package:notedget/components/note_card.dart';
 import 'package:notedget/components/notelist.dart';
 import 'package:notedget/screens/note_screen.dart';
 import 'package:notedget/screens/settings_screen.dart';
@@ -65,6 +59,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
+      extendBodyBehindAppBar: true,
       resizeToAvoidBottomInset: false,
       extendBody: true,
       body: Container(
