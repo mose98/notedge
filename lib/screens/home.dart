@@ -89,15 +89,18 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
             ),
             SafeArea(
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(15, 30, 15, 15),
+                padding: const EdgeInsets.fromLTRB(5, 30, 5, 15),
                 child: Align(
                   alignment: Alignment.topLeft,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "Le mie note",
-                        style: kLargeTitleStyle,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 10),
+                        child: Text(
+                          "Le mie note",
+                          style: kLargeTitleStyle,
+                        ),
                       ),
                       SizedBox(
                         height: 20,

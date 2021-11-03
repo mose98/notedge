@@ -157,7 +157,7 @@ class _NoteScreenState extends State<NoteScreen> {
                           style: kNormalTextStyle.copyWith(color: textColor),
                           decoration: InputDecoration(hintText: "Inserisci la nota...", border: InputBorder.none),
                         ),
-                      )
+                      ),
                     ],
                   ),
                   Align(

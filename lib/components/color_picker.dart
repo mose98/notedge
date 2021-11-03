@@ -6,11 +6,7 @@ class MyColorPicker extends StatefulWidget {
   final Color initialColor; // The default picked color
   final bool circleItem; // Determnie shapes of color cells
 
-  MyColorPicker(
-      {required this.onSelectColor,
-        required this.availableColors,
-        required this.initialColor,
-        this.circleItem = true});
+  MyColorPicker({required this.onSelectColor, required this.availableColors, required this.initialColor, this.circleItem = true});
 
   @override
   _MyColorPickerState createState() => _MyColorPickerState();
@@ -38,6 +34,7 @@ class _MyColorPickerState extends State<MyColorPicker> {
           itemBuilder: (context, index) {
             final itemColor = widget.availableColors[index];
             return InkWell(
+              autofocus: false,
               onTap: () {
                 widget.onSelectColor(itemColor);
                 setState(() {
@@ -49,14 +46,21 @@ class _MyColorPickerState extends State<MyColorPicker> {
                 child: Container(
                   width: 30,
                   height: 30,
-                  decoration: BoxDecoration(color: itemColor, shape: widget.circleItem == true ? BoxShape.circle : BoxShape.rectangle, border: Border.all(width: 2, color: Colors.grey[300]!)),
+                  decoration: BoxDecoration(
+                    color: itemColor,
+                    shape: widget.circleItem == true ? BoxShape.circle : BoxShape.rectangle,
+                    border: Border.all(
+                      width: 1,
+                      color: Colors.grey[300]!,
+                    ),
+                  ),
                   child: itemColor == _pickedColor
                       ? Center(
-                    child: Icon(
-                      Icons.check,
-                      color: Colors.white,
-                    ),
-                  )
+                          child: Icon(
+                            Icons.check,
+                            color: Colors.white,
+                          ),
+                        )
                       : Container(),
                 ),
               ),

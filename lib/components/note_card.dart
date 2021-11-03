@@ -16,7 +16,7 @@ class NoteCard extends StatelessWidget {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Padding(
-      padding: const EdgeInsets.all(10.0),
+      padding: const EdgeInsets.all(5.0),
       child: Container(
         height: MediaQuery.of(context).size.height / 4,
         decoration: BoxDecoration(
@@ -45,7 +45,7 @@ class NoteCard extends StatelessWidget {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(10.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 10.0),
                   child: Text(
                     content ?? '',
                     maxLines: 3,
