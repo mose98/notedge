@@ -88,6 +88,7 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
               ),
             ),
             SafeArea(
+              bottom: false,
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(5, 30, 5, 15),
                 child: Align(
@@ -116,37 +117,41 @@ class _HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                 padding: const EdgeInsets.fromLTRB(0, 10, 20, 10),
                 child: Align(
                   alignment: Alignment.bottomRight,
-                  child: FlatButton(
+                  child: Material(
+                    color: theme.buttonColor,
+                    elevation: 30,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(40),
                     ),
-                    color: theme.buttonColor,
-                    onPressed: () {
-                      final now = new DateTime.now();
-                      String dataText = DateFormat.yMMMd('it_IT').add_jm().format(now);
+                    child: FlatButton(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(40),
+                      ),
+                      color: theme.buttonColor,
+                      onPressed: () {
+                        final now = new DateTime.now();
+                        String dataText = DateFormat.yMMMd('it_IT').add_jm().format(now);
 
-                      Navigator.push(
-                        context,
-                        PageTransition(
-                          type: PageTransitionType.rightToLeft,
-                          child: NoteScreen(
-                            noteMode: NoteMode.New,
-                            note: {
-                              'title': '',
-                              'content': '',
-                              'creationdate': dataText,
-                              'editingdate': dataText,
-                              'favorite': 0,
-                              'color': theme.scaffoldBackgroundColor.toString().split('(0x')[1].split(')')[0],
-                              'alarmdate': 'none',
-                              'archived': 0,
-                            },
+                        Navigator.push(
+                          context,
+                          PageTransition(
+                            type: PageTransitionType.rightToLeft,
+                            child: NoteScreen(
+                              noteMode: NoteMode.New,
+                              note: {
+                                'title': '',
+                                'content': '',
+                                'creationdate': dataText,
+                                'editingdate': dataText,
+                                'favorite': 0,
+                                'color': theme.scaffoldBackgroundColor.toString().split('(0x')[1].split(')')[0],
+                                'alarmdate': 'none',
+                                'archived': 0,
+                              },
+                            ),
                           ),
-                        ),
-                      );
-                    },
-                    child: Padding(
-                      padding: const EdgeInsets.fromLTRB(0, 10, 0, 10),
+                        );
+                      },
                       child: Row(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
